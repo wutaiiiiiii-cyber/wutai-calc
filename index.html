@@ -9,43 +9,41 @@
     
     <style>
         :root {
-            /* 五泰房屋 CIS 標準色 [cite: 124, 123] */
+            /* 五泰房屋 CIS 標準色 */
             --wutai-blue: #1B5C6D;   /* PANTONE 7708C 深藍 */
             --wutai-orange: #E65C12; /* PANTONE 1595C 橘色 */
             
             --bg-color: #f8f9fa;
             --surface: #ffffff;
-            --text-main: #2c3e50;
-            --text-sub: #6b7280;
+            --text-main: #222222; /* 字體改深一點，增加對比 */
+            --text-sub: #555555;
             --border: #e0e0e0;
         }
 
         body {
+            /* 基底字體從預設 16px 改為 18px，對長輩更友善 */
+            font-size: 18px; 
             font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            line-height: 1.5;
+            line-height: 1.6; /* 行距拉開 */
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- 導航列與 Logo 設定 --- */
+        /* --- 導航列 --- */
         .navbar {
             background: var(--surface);
-            border-bottom: 3px solid var(--wutai-orange);
-            padding: 12px 15px;
+            border-bottom: 4px solid var(--wutai-orange); /* 線條加粗 */
+            padding: 15px;
             text-align: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        /* Logo 容器 */
         .brand-container {
             display: flex;
             align-items: center;
@@ -53,189 +51,192 @@
             gap: 10px;
         }
 
-        /* 如果您有圖片 Logo，會顯示在這裡；沒有則顯示文字 */
         .brand-logo-img {
-            height: 35px; /* 根據 CIS 規範建議高度 [cite: 91] */
+            height: 40px; /* Logo 稍微放大 */
             width: auto;
-            display: none; /* 預設隱藏，若有圖片請在 HTML 中移除 style="display:none" */
+            display: none; 
         }
 
-        /* 純文字 Logo (備用方案) */
         .brand-text {
-            font-weight: 800;
-            font-size: 20px;
+            font-weight: 900;
+            font-size: 22px; /* 標題字加大 */
             color: var(--wutai-blue);
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px 15px;
+            padding: 25px 15px; /* 邊距加大 */
         }
 
         /* 卡片通用樣式 */
         .card {
             background: var(--surface);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(27, 92, 109, 0.08);
-            padding: 25px 20px;
-            margin-bottom: 25px;
+            border-radius: 16px; /* 圓角更圓潤 */
+            box-shadow: 0 4px 16px rgba(27, 92, 109, 0.1);
+            padding: 30px 20px;
+            margin-bottom: 30px;
             border: 1px solid var(--border);
         }
 
         .section-title {
-            font-size: 17px;
+            font-size: 20px; /* 區塊標題加大 */
             font-weight: 800;
             color: var(--wutai-blue);
-            margin-bottom: 20px;
-            padding-left: 10px;
-            border-left: 4px solid var(--wutai-orange);
+            margin-bottom: 25px;
+            padding-left: 12px;
+            border-left: 6px solid var(--wutai-orange); /* 飾條加粗 */
         }
 
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 15px;
+            gap: 20px; /* 間距拉大 */
         }
         @media (min-width: 600px) {
             .grid-2 { grid-template-columns: 1fr 1fr; }
         }
 
-        .form-group { margin-bottom: 15px; position: relative; }
+        .form-group { margin-bottom: 20px; position: relative; }
+        
         .form-label {
             display: block;
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 17px; /* 標籤字加大 */
+            font-weight: 700;
+            margin-bottom: 10px;
             color: var(--text-main);
         }
         
         .form-input {
             width: 100%;
-            padding: 14px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            font-size: 16px; 
+            padding: 16px; /* 輸入框內距加大，手指好點 */
+            border: 2px solid #ced4da; /* 邊框加粗 */
+            border-radius: 10px;
+            font-size: 19px; /* 輸入的數字變大 */
             background: #fff;
             box-sizing: border-box;
             appearance: none;
+            color: #333;
         }
         .form-input:focus {
             outline: none;
             border-color: var(--wutai-blue);
-            box-shadow: 0 0 0 3px rgba(27, 92, 109, 0.1);
+            box-shadow: 0 0 0 4px rgba(27, 92, 109, 0.15);
         }
 
         /* 自動估算標籤 */
         .badge-auto {
             position: absolute;
-            right: 12px;
-            top: 45px; /* 對齊輸入框 */
+            right: 15px;
+            top: 52px; /* 位置微調 */
             background: #e0f2f1;
             color: var(--wutai-blue);
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            pointer-events: none; /* 讓點擊穿透到 input */
+            font-size: 13px; /* 提示字加大 */
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 6px;
+            pointer-events: none;
             display: none;
         }
 
         .btn-calc {
             width: 100%;
-            padding: 16px;
+            padding: 18px; /* 按鈕更肥 */
             background: var(--wutai-orange); 
             color: white;
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 20px; /* 按鈕字加大 */
+            font-weight: 800;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 4px 10px rgba(230, 92, 18, 0.3);
+            margin-top: 10px;
+            box-shadow: 0 6px 15px rgba(230, 92, 18, 0.3);
             transition: transform 0.1s;
         }
-        .btn-calc:active { transform: scale(0.98); }
+        .btn-calc:active { transform: scale(0.96); }
 
         #resultSection { display: none; }
 
         .hero-result {
             background: linear-gradient(135deg, var(--wutai-blue), #144a57);
             color: white;
-            border-radius: 16px;
-            padding: 30px 20px;
+            border-radius: 20px;
+            padding: 35px 25px;
             text-align: center;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(27, 92, 109, 0.3);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(27, 92, 109, 0.3);
         }
-        .hero-label { font-size: 14px; opacity: 0.9; letter-spacing: 1px; }
+        .hero-label { font-size: 16px; opacity: 0.95; letter-spacing: 1px; font-weight: bold; }
         .hero-value { 
-            font-size: 46px; 
+            font-size: 52px; /* 結果數字超大 */
             font-weight: 800; 
-            margin: 10px 0; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin: 15px 0; 
+            text-shadow: 0 3px 6px rgba(0,0,0,0.2);
         }
 
         .table-container {
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             overflow-x: auto;
         }
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 16px; /* 表格內文字加大 */
             white-space: nowrap;
         }
         .data-table th, .data-table td {
-            padding: 12px;
+            padding: 16px; /* 表格格子更寬鬆 */
             border-bottom: 1px solid var(--border);
         }
         .data-table th { 
             background: #f1f5f9; 
             text-align: left; 
             color: var(--text-sub); 
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 16px;
         }
-        .data-table td { color: var(--text-main); }
+        .data-table td { color: var(--text-main); font-weight: 500; }
         
-        .col-item { width: 30%; font-weight: 600; }
-        .col-formula { width: 45%; font-size: 12px; color: var(--text-sub); white-space: normal; }
-        .col-value { width: 25%; text-align: right; font-weight: 700; font-family: monospace; }
+        .col-item { width: 30%; font-weight: 700; }
+        .col-formula { width: 45%; font-size: 13px; color: var(--text-sub); white-space: normal; line-height: 1.4; }
+        .col-value { width: 25%; text-align: right; font-weight: 700; font-family: monospace; font-size: 17px; }
 
         .tag {
-            display: inline-block; font-size: 11px; padding: 2px 6px;
-            border-radius: 4px; margin-right: 6px; vertical-align: middle;
+            display: inline-block; font-size: 12px; padding: 3px 8px; /* 標籤加大 */
+            border-radius: 4px; margin-right: 8px; vertical-align: middle;
+            font-weight: bold;
         }
         .tag-cash { background: #f0f4c3; color: #558b2f; border: 1px solid #dce775; }
         .tag-fund { background: #ffe0b2; color: #e65100; border: 1px solid #ffcc80; }
 
         .row-total { background: #fdfbf7; }
-        .row-total td { color: var(--wutai-blue); font-weight: 800; border-top: 2px solid var(--wutai-blue); }
+        .row-total td { color: var(--wutai-blue); font-weight: 900; border-top: 3px solid var(--wutai-blue); font-size: 18px; }
 
         /* HubSpot 表單容器 */
         .hubspot-wrapper {
             background: #fff;
-            border: 2px solid var(--wutai-orange);
-            border-radius: 12px;
-            padding: 25px 20px;
-            margin-top: 30px;
+            border: 3px solid var(--wutai-orange); /* 邊框加粗 */
+            border-radius: 16px;
+            padding: 30px 20px;
+            margin-top: 35px;
             text-align: left;
-            box-shadow: 0 8px 20px rgba(230, 92, 18, 0.1);
+            box-shadow: 0 10px 25px rgba(230, 92, 18, 0.15);
             min-height: 150px; 
         }
         .hubspot-title {
             color: var(--wutai-orange);
-            font-weight: 800;
-            font-size: 20px;
-            margin-bottom: 8px;
+            font-weight: 900;
+            font-size: 24px; /* 標題加大 */
+            margin-bottom: 10px;
             text-align: center;
         }
         .hubspot-subtitle {
             color: var(--text-main);
-            font-size: 15px;
+            font-size: 17px; /* 副標加大 */
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             line-height: 1.6;
         }
     </style>
@@ -341,7 +342,7 @@
                             <td class="col-value" id="totalCash">0</td>
                         </tr>
 
-                        <tr><td colspan="3" style="height:10px; border:none; background:#f9fafb;"></td></tr>
+                        <tr><td colspan="3" style="height:15px; border:none; background:#f9fafb;"></td></tr>
 
                         <tr>
                             <td><span class="tag tag-fund">補助</span>修繕費</td>
@@ -365,7 +366,7 @@
                     </tbody>
                 </table>
             </div>
-            <p style="font-size:12px; color:#999; margin-top:15px; line-height:1.4; text-align: center;">
+            <p style="font-size:14px; color:#999; margin-top:20px; line-height:1.5; text-align: center;">
                 ※ 本試算結果僅供參考，修繕費、公證費及保險費為實支實付補助額度。<br>
                 五泰房屋仲介有限公司
             </p>
