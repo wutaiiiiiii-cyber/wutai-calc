@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>五泰房屋 | 房東補助資格試算</title>
+    
+    <script charset="utf-8" type="text/javascript" src="https://js-na2.hsforms.net/forms/embed/v2.js"></script>
+    
+    <style>
+        :root {
+            /* 五泰房屋 CIS 標準色 [cite: 124, 123] */
+            --wutai-blue: #1B5C6D;   /* PANTONE 7708C 深藍 */
+            --wutai-orange: #E65C12; /* PANTONE 1595C 橘色 */
+            
+            --bg-color: #f8f9fa;
+            --surface: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #6b7280;
+            --border: #e0e0e0;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- 導航列與 Logo 設定 --- */
+        .navbar {
+            background: var(--surface);
+            border-bottom: 3px solid var(--wutai-orange);
+            padding: 12px 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Logo 容器 */
+        .brand-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* 如果您有圖片 Logo，會顯示在這裡；沒有則顯示文字 */
+        .brand-logo-img {
+            height: 35px; /* 根據 CIS 規範建議高度 [cite: 91] */
+            width: auto;
+            display: none; /* 預設隱藏，若有圖片請在 HTML 中移除 style="display:none" */
+        }
+
+        /* 純文字 Logo (備用方案) */
+        .brand-text {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--wutai-blue);
+            letter-spacing: 1.5px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* 卡片通用樣式 */
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(27, 92, 109, 0.08);
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--wutai-blue);
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid var(--wutai-orange);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        @media (min-width: 600px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; }
+        }
+
+        .form-group { margin-bottom: 15px; position: relative; }
+        .form-label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px; 
+            background: #fff;
+            box-sizing: border-box;
+            appearance: none;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--wutai-blue);
+            box-shadow: 0 0 0 3px rgba(27, 92, 109, 0.1);
+        }
+
+        /* 自動估算標籤 */
+        .badge-auto {
+            position: absolute;
+            right: 12px;
+            top: 45px; /* 對齊輸入框 */
+            background: #e0f2f1;
+            color: var(--wutai-blue);
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            pointer-events: none; /* 讓點擊穿透到 input */
+            display: none;
+        }
+
+        .btn-calc {
+            width: 100%;
+            padding: 16px;
+            background: var(--wutai-orange); 
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(230, 92, 18, 0.3);
+            transition: transform 0.1s;
+        }
+        .btn-calc:active { transform: scale(0.98); }
+
+        #resultSection { display: none; }
+
+        .hero-result {
+            background: linear-gradient(135deg, var(--wutai-blue), #144a57);
+            color: white;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(27, 92, 109, 0.3);
+        }
+        .hero-label { font-size: 14px; opacity: 0.9; letter-spacing: 1px; }
+        .hero-value { 
+            font-size: 46px; 
+            font-weight: 800; 
+            margin: 10px 0; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .table-container {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .data-table th, .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table th { 
+            background: #f1f5f9; 
+            text-align: left; 
+            color: var(--text-sub); 
+            font-weight: 600;
+        }
+        .data-table td { color: var(--text-main); }
+        
+        .col-item { width: 30%; font-weight: 600; }
+        .col-formula { width: 45%; font-size: 12px; color: var(--text-sub); white-space: normal; }
+        .col-value { width: 25%; text-align: right; font-weight: 700; font-family: monospace; }
+
+        .tag {
+            display: inline-block; font-size: 11px; padding: 2px 6px;
+            border-radius: 4px; margin-right: 6px; vertical-align: middle;
+        }
+        .tag-cash { background: #f0f4c3; color: #558b2f; border: 1px solid #dce775; }
+        .tag-fund { background: #ffe0b2; color: #e65100; border: 1px solid #ffcc80; }
+
+        .row-total { background: #fdfbf7; }
+        .row-total td { color: var(--wutai-blue); font-weight: 800; border-top: 2px solid var(--wutai-blue); }
+
+        /* HubSpot 表單容器 */
+        .hubspot-wrapper {
+            background: #fff;
+            border: 2px solid var(--wutai-orange);
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin-top: 30px;
+            text-align: left;
+            box-shadow: 0 8px 20px rgba(230, 92, 18, 0.1);
+            min-height: 150px; 
+        }
+        .hubspot-title {
+            color: var(--wutai-orange);
+            font-weight: 800;
+            font-size: 20px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .hubspot-subtitle {
+            color: var(--text-main);
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="brand-container">
+        <img src="logo.png" alt="五泰房屋 Logo" class="brand-logo-img" style="display:none">
+        
+        <span class="brand-text">五泰房屋 | 房東補助試算</span>
+    </div>
+</div>
+
+<div class="container">
+    
+    <div class="card">
+        <div class="section-title">輸入物業資料</div>
+        
+        <div class="form-group">
+            <label class="form-label">預期每月租金 (元)</label>
+            <input type="text" inputmode="numeric" id="rent" class="form-input" placeholder="例如：25000" oninput="autoEstimate()">
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">試算年限</label>
+                <select id="years" class="form-input">
+                    <option value="1">1 年</option>
+                    <option value="2">2 年</option>
+                    <option value="3" selected>3 年 (完整合約)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">房東所得稅率</label>
+                <select id="taxRate" class="form-input">
+                    <option value="0.05">5%</option>
+                    <option value="0.12">12%</option>
+                    <option value="0.20" selected>20%</option>
+                    <option value="0.30">30%</option>
+                    <option value="0.40">40%</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">現行房屋稅 (年)</label>
+                <input type="text" inputmode="numeric" id="houseTax" class="form-input" oninput="userEdited('house')">
+                <span id="tagHouse" class="badge-auto">自動估算：可修改</span>
+            </div>
+            <div class="form-group">
+                <label class="form-label">現行地價稅 (年)</label>
+                <input type="text" inputmode="numeric" id="landTax" class="form-input" oninput="userEdited('land')">
+                <span id="tagLand" class="badge-auto">自動估算：可修改</span>
+            </div>
+        </div>
+
+        <button class="btn-calc" onclick="calculate()">開始試算</button>
+    </div>
+
+    <div id="resultSection">
+        
+        <div class="hero-result">
+            <div class="hero-label">試算總價值 (含稅務減免/補助)</div>
+            <div class="hero-value" id="grandTotal">$0</div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">財務明細表</div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="col-item">項目</th>
+                            <th class="col-formula">計算說明</th>
+                            <th class="col-value">效益</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="tag tag-cash">現金</span>仲介費</td>
+                            <td class="col-formula">租金×1個月×年數</td>
+                            <td class="col-value" id="valBrokerage">0</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-cash">現金</span>代管費</td>
+                            <td class="col-formula">租金×10%×12月×年數</td>
+                            <td class="col-value" id="valManagement">0</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-cash">現金</span>所得稅</td>
+                            <td class="col-formula">社宅稅制優惠差額</td>
+                            <td class="col-value" id="valIncomeTax">0</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-cash">現金</span>持有稅</td>
+                            <td class="col-formula">房屋/地價稅自用減免</td>
+                            <td class="col-value" id="valHoldingTax">0</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td colspan="2">【A】實質省下現金</td>
+                            <td class="col-value" id="totalCash">0</td>
+                        </tr>
+
+                        <tr><td colspan="3" style="height:10px; border:none; background:#f9fafb;"></td></tr>
+
+                        <tr>
+                            <td><span class="tag tag-fund">補助</span>修繕費</td>
+                            <td class="col-formula">每年$15,000額度</td>
+                            <td class="col-value" id="valRepair">0</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-fund">補助</span>保險費</td>
+                            <td class="col-formula">每年$3,500額度</td>
+                            <td class="col-value" id="valInsurance">0</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-fund">補助</span>公證費</td>
+                            <td class="col-formula">單次上限$4,500×年數</td>
+                            <td class="col-value" id="valNotary">0</td>
+                        </tr>
+                        <tr class="row-total" style="background:#fff3e0;">
+                            <td colspan="2" style="color:#e65100; border-top: 2px solid #ffb74d;">【B】政府維護基金</td>
+                            <td class="col-value" style="color:#e65100;" id="totalFund">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:12px; color:#999; margin-top:15px; line-height:1.4; text-align: center;">
+                ※ 本試算結果僅供參考，修繕費、公證費及保險費為實支實付補助額度。<br>
+                五泰房屋仲介有限公司
+            </p>
+        </div>
+
+        <div class="hubspot-wrapper">
+            <div class="hubspot-title">查詢補助資格</div>
+            <div class="hubspot-subtitle">為您確認您的房子是否符合補助資格<br>請輸入手機，將由專人為您服務：</div>
+            
+            <div id="hubspot-form-target">
+                </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    let isHouseEdited = false;
+    let isLandEdited = false;
+
+    // 格式化金錢
+    function formatMoney(num) {
+        return "$" + Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 自動估算稅金
+    function autoEstimate() {
+        let rent = parseInt(document.getElementById('rent').value) || 0;
+        let estHouse = Math.round(rent * 0.6); 
+        let estLand = Math.round(rent * 0.15);
+
+        if (!isHouseEdited) {
+            document.getElementById('houseTax').value = rent ? estHouse : '';
+            document.getElementById('tagHouse').style.display = rent ? 'block' : 'none';
+        }
+        if (!isLandEdited) {
+            document.getElementById('landTax').value = rent ? estLand : '';
+            document.getElementById('tagLand').style.display = rent ? 'block' : 'none';
+        }
+    }
+
+    // 標記用戶已手動修改
+    function userEdited(type) {
+        if (type === 'house') { isHouseEdited = true; document.getElementById('tagHouse').style.display = 'none'; }
+        if (type === 'land') { isLandEdited = true; document.getElementById('tagLand').style.display = 'none'; }
+    }
+
+    // 核心計算邏輯
+    function calculate() {
+        let rent = parseInt(document.getElementById('rent').value) || 0;
+        if(rent === 0) { alert("請輸入預期租金才能試算喔！"); return; }
+
+        let years = parseInt(document.getElementById('years').value);
+        let taxRate = parseFloat(document.getElementById('taxRate').value);
+        let houseTax = parseInt(document.getElementById('houseTax').value) || 0;
+        let landTax = parseInt(document.getElementById('landTax').value) || 0;
+
+        // 計算各項數值
+        let brokerage = rent * years; 
+        let management = rent * 0.1 * 12 * years;
+        let taxGeneral = (rent * 12 * 0.57) * taxRate;
+        let taxSocial = Math.max(0, (rent * 12) - 180000) * 0.4 * taxRate;
+        let incomeTaxSaved = (taxGeneral - taxSocial) * years;
+        let houseTaxSaved = houseTax * 0.4 * years; 
+        let landTaxSaved = landTax * 0.8 * years;
+        let holdingTaxSaved = houseTaxSaved + landTaxSaved;
+        let totalCash = brokerage + management + incomeTaxSaved + holdingTaxSaved;
+
+        let repair = 15000 * years;
+        let insurance = 3500 * years;
+        let notary = 4500 * years; 
+        let totalFund = repair + insurance + notary;
+        let grandTotal = totalCash + totalFund;
+
+        // 更新畫面
+        document.getElementById('grandTotal').innerText = formatMoney(grandTotal);
+        document.getElementById('valBrokerage').innerText = formatMoney(brokerage);
+        document.getElementById('valManagement').innerText = formatMoney(management);
+        document.getElementById('valIncomeTax').innerText = formatMoney(incomeTaxSaved);
+        document.getElementById('valHoldingTax').innerText = formatMoney(holdingTaxSaved);
+        document.getElementById('totalCash').innerText = formatMoney(totalCash);
+        document.getElementById('valRepair').innerText = formatMoney(repair);
+        document.getElementById('valInsurance').innerText = formatMoney(insurance);
+        document.getElementById('valNotary').innerText = formatMoney(notary);
+        document.getElementById('totalFund').innerText = formatMoney(totalFund);
+
+        let resultSec = document.getElementById('resultSection');
+        resultSec.style.display = 'block';
+        resultSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // 🔥 執行 HubSpot 表單載入
+        loadHubspotForm();
+    }
+
+    // 載入表單 (使用您提供的 na2 區域與 ID)
+    function loadHubspotForm() {
+        if (window.hbspt) {
+            document.getElementById('hubspot-form-target').innerHTML = ""; 
+            
+            hbspt.forms.create({
+                region: "na2", 
+                portalId: "20614802", 
+                formId: "51ca362f-f180-48ac-b0b1-791454dbd5d4",
+                target: "#hubspot-form-target"
+            });
+        } else {
+            console.error("HubSpot script not loaded.");
+        }
+    }
+</script>
+
+</body>
+</html>
